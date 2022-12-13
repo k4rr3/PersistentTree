@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import java.util.LinkedList;
 
 public class LinkedBinarySearchTree<K, V>
         implements BinarySearchTree<K, V> {
@@ -11,33 +12,34 @@ public class LinkedBinarySearchTree<K, V>
         private final Node<K, V> left;
         private final Node<K, V> right;
 
-        private Node() {
-            key = null;
-            value = null;
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
             left = null;
             right = null;
         }
-// ¿?
+
+        public Node(K key, V value, Node<K, V> left, Node<K, V> right) {
+            this.key = key;
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
     }
 
-    public LinkedBinarySearchTree(
-            Comparator<? super K> comparator, Node<K, V> root, Comparator<? super K> comparator1) {
-        this.root = root;
-// ¿?
-        this.comparator = comparator1;
-    }
-
-    private LinkedBinarySearchTree(
-            Comparator<? super K> comparator,
-            Node<K, V> root) {
-        this.comparator = null;
+    public LinkedBinarySearchTree(Comparator<? super K> comparator) {
+        this.comparator = comparator;
         this.root = null;
+    }
+
+    private LinkedBinarySearchTree(Comparator<? super K> comparator, Node<K, V> root) {
+        this.comparator = comparator;
+        this.root = root;
     }
 
     @Override
     public boolean isEmpty() {
-// ¿?
-        return true;
+        return this.root == null;
     }
 
     @Override
