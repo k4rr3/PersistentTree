@@ -44,10 +44,7 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public boolean containsKey(K key) {
-        //if() key.equals(null) {
-
-        //}
-        return true;
+        return getNode(root, key) != null;
     }
 
     @Override
@@ -55,6 +52,22 @@ public class LinkedBinarySearchTree<K, V>
 // ¿?
 
         return get(key);
+    }
+
+    private Node<K, V> getNode(Node<K, V> node, K key) {
+        if (node != null) {
+            //if key > key of actual node, the key we're looking for is in the right subtree
+            if (comparator.compare(node.key, key) < 0) {
+                getNode(node.right, key);
+            }
+            //if key < key of actual node, the key we're looking for is in the left subtree
+            else if (comparator.compare(node.key, key) > 0) {
+                getNode(node.left, key);
+            }
+            //otherwise, we've found the key in a node, and we return this node
+            else return node;
+        }
+        return null;
     }
 
     @Override
