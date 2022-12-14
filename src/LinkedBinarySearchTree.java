@@ -1,5 +1,5 @@
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class LinkedBinarySearchTree<K, V>
         implements BinarySearchTree<K, V> {
@@ -49,9 +49,14 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public V get(K key) {
-// ¿?
-
-        return get(key);
+        // ¿?
+        Node<K, V> node = getNode(root, key);
+        if (node == null)
+            throw new NullPointerException("");
+        else if (node.key == null)
+            throw new NoSuchElementException("");
+        else
+            return node.value;
     }
 
     private Node<K, V> getNode(Node<K, V> node, K key) {
@@ -73,7 +78,22 @@ public class LinkedBinarySearchTree<K, V>
     @Override
     public LinkedBinarySearchTree<K, V> put(K key, V value) {
 // ¿?
-        return new LinkedBinarySearchTree<>(comparator, root);
+
+        return new LinkedBinarySearchTree<>(comparator, createNewNode(root, key, value));
+    }
+
+    private Node<K, V> createNewNode(Node<K, V> node, K key, V value) {
+        if (node != null) {
+            if (comparator.compare(node.key, key) < 0) {
+
+                return new Node<K, V>(node.key, node.value, node.left, createNewNode(node.right, key, value));
+            } else if (comparator.compare(node.key, key) > 0) {
+                return new Node<K, V>(node.key, node.value, createNewNode(node.left, key, value), node.right);
+            } else {
+                return new Node<K, V>(node.key, value, node.left, node.right);
+            }
+        }
+        return new Node<K, V>(key, value);
     }
 
     @Override
