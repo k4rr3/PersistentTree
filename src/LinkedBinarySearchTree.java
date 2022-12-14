@@ -78,14 +78,15 @@ public class LinkedBinarySearchTree<K, V>
     @Override
     public LinkedBinarySearchTree<K, V> put(K key, V value) {
 // ¿?
-
         return new LinkedBinarySearchTree<>(comparator, createNewNode(root, key, value));
     }
 
     private Node<K, V> createNewNode(Node<K, V> node, K key, V value) {
         if (node != null) {
+            if (node.key == null || node.value == null) {
+                throw new NullPointerException("");
+            }
             if (comparator.compare(node.key, key) < 0) {
-
                 return new Node<K, V>(node.key, node.value, node.left, createNewNode(node.right, key, value));
             } else if (comparator.compare(node.key, key) > 0) {
                 return new Node<K, V>(node.key, node.value, createNewNode(node.left, key, value), node.right);
@@ -93,6 +94,7 @@ public class LinkedBinarySearchTree<K, V>
                 return new Node<K, V>(node.key, value, node.left, node.right);
             }
         }
+        //throw new NullPointerException("");
         return new Node<K, V>(key, value);
     }
 
