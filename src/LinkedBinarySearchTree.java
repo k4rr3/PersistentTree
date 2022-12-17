@@ -58,23 +58,7 @@ public class LinkedBinarySearchTree<K, V>
         else
             return node.value;
     }
-
-    /*private Node<K, V> getNode(Node<K, V> node, K key) {
-        if (node != null) {
-
-            //if key > key of actual node, the key we're looking for is in the right subtree
-            if (comparator.compare(node.key, key) < 0) {
-                getNode(node.right, key);
-            } else if (comparator.compare(node.key, key) > 0) {
-                //if key < key of actual node, the key we're looking for is in the left subtree
-                getNode(node.left, key);
-            } else {
-                //otherwise, we've found the key in a node, and we return this node
-                return node;
-            }
-        }
-        return null;
-    }*/
+    
     private Node<K, V> getNode(Node<K, V> node, K key) {
         if (node == null)
             return null;
@@ -122,9 +106,10 @@ public class LinkedBinarySearchTree<K, V>
         if (key == null) {
             throw new NullPointerException("");
         }
-        if (containsKey(key))
-            return new LinkedBinarySearchTree<>(comparator, deleteSpecificNode(root, key));
-        else
+        if (containsKey(key)) {
+            Node<K, V> node = deleteSpecificNode(root, key);
+            return new LinkedBinarySearchTree<>(comparator, node);
+        } else
             throw new NoSuchElementException("");
     }
 
@@ -138,32 +123,59 @@ public class LinkedBinarySearchTree<K, V>
             //Checking if the node that we want to delete has two children
 
             else if (nodeToDelete.left != null && nodeToDelete.right != null) {
-                Node<K, V> biggestOfLeftSubtree = biggestOfLeftSubtree(nodeToDelete);
-                return new Node<>(biggestOfLeftSubtree.key, biggestOfLeftSubtree.value, nodeToDelete.left, nodeToDelete.right);
+                Node<K, V> biggestOfLeftSubtree = biggestOfLeftSubtree(nodeToDelete.left);
+                deleteSpecificNode(root, biggestOfLeftSubtree.key);
+                Node<K, V> childOfDeletedNode = new Node<>(biggestOfLeftSubtree.key, biggestOfLeftSubtree.value, nodeToDelete.left, nodeToDelete.right);
+                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
+                if (parentOfDeletedNode.left != nodeToDelete) {
+                    return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
+                } else
+                    return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
             }
             //Then it means that the node we want to delete has only one child
             else {
+                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
+                Node<K, V> childOfDeletedNode;
+                if (nodeToDelete.left != null) {
+                    childOfDeletedNode = nodeToDelete.left;
+                    if (parentOfDeletedNode.left != nodeToDelete) {
+                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
+                    } else
+                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
 
+                } else {
+                    childOfDeletedNode = nodeToDelete.right;
+                    if (parentOfDeletedNode.left != nodeToDelete) {
+                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
+                    } else
+                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
+
+                }
             }
         }
+        return null;
     }
 
     private Node<K, V> biggestOfLeftSubtree(Node<K, V> node) {
         if (node.right != null)
             biggestOfLeftSubtree(node.right);
-        else
-            return node;
+        return node;
     }
 
     private Node<K, V> getParentNode(Node<K, V> child, Node<K, V> parent, K key) {
         if (child == null)
             return null;
-        parent = child;
-        return switch (comparator.compare(child.key, key)) {
-            case 1 -> getParentNode(child.left, parent, key);
-            case -1 -> getParentNode(child.right, parent, key);
-            default -> parent;
-        };
+        switch (comparator.compare(child.key, key)) {
+            case 1 -> {
+                return getParentNode(child.left, child, key);
+            }
+            case -1 -> {
+                return getParentNode(child.right, child, key);
+            }
+            default -> {
+                return parent;
+            }
+        }
     }
 
     /*private Node<K, V> deleteSpecificNode(Node<K, V> node, K key) {
