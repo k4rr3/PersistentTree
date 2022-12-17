@@ -59,26 +59,38 @@ public class LinkedBinarySearchTree<K, V>
             return node.value;
     }
 
-    private Node<K, V> getNode(Node<K, V> node, K key) {
+    /*private Node<K, V> getNode(Node<K, V> node, K key) {
         if (node != null) {
+
             //if key > key of actual node, the key we're looking for is in the right subtree
             if (comparator.compare(node.key, key) < 0) {
                 getNode(node.right, key);
-            }
-            //if key < key of actual node, the key we're looking for is in the left subtree
-            else if (comparator.compare(node.key, key) > 0) {
+            } else if (comparator.compare(node.key, key) > 0) {
+                //if key < key of actual node, the key we're looking for is in the left subtree
                 getNode(node.left, key);
+            } else {
+                //otherwise, we've found the key in a node, and we return this node
+                return node;
             }
-            //otherwise, we've found the key in a node, and we return this node
-            else return node;
         }
         return null;
+    }*/
+    private Node<K, V> getNode(Node<K, V> node, K key) {
+        if (node == null)
+            return null;
+
+        return switch (comparator.compare(node.key, key)) {
+            case 1 -> getNode(node.left, key);
+            case -1 -> getNode(node.right, key);
+            default -> node;
+        };
     }
 
     @Override
     public LinkedBinarySearchTree<K, V> put(K key, V value) {
 // ¿?
-        return new LinkedBinarySearchTree<>(comparator, createNewNode(root, key, value));
+        Node<K, V> n = createNewNode(root, key, value);
+        return new LinkedBinarySearchTree<>(comparator, n);
     }
 
     private Node<K, V> createNewNode(Node<K, V> node, K key, V value) {
@@ -110,13 +122,51 @@ public class LinkedBinarySearchTree<K, V>
         if (key == null) {
             throw new NullPointerException("");
         }
-        if (containsKey(key)) {
+        if (containsKey(key))
             return new LinkedBinarySearchTree<>(comparator, deleteSpecificNode(root, key));
-        }
-        return new LinkedBinarySearchTree<>(comparator, root);
+        else
+            throw new NoSuchElementException("");
     }
 
-    private Node<K, V> deleteSpecificNode(Node<K, V> node, K key) {
+    private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
+        Node<K, V> nodeToDelete = getNode(root, key);
+        if (nodeToDelete.key.equals(key)) {
+            //Checking if the node that we want to delete is a leaf, or it is not
+            if (nodeToDelete.left == null && nodeToDelete.right == null) {
+                return new Node<>(null, null);
+            }
+            //Checking if the node that we want to delete has two children
+
+            else if (nodeToDelete.left != null && nodeToDelete.right != null) {
+                Node<K, V> biggestOfLeftSubtree = biggestOfLeftSubtree(nodeToDelete);
+                return new Node<>(biggestOfLeftSubtree.key, biggestOfLeftSubtree.value, nodeToDelete.left, nodeToDelete.right);
+            }
+            //Then it means that the node we want to delete has only one child
+            else {
+
+            }
+        }
+    }
+
+    private Node<K, V> biggestOfLeftSubtree(Node<K, V> node) {
+        if (node.right != null)
+            biggestOfLeftSubtree(node.right);
+        else
+            return node;
+    }
+
+    private Node<K, V> getParentNode(Node<K, V> child, Node<K, V> parent, K key) {
+        if (child == null)
+            return null;
+        parent = child;
+        return switch (comparator.compare(child.key, key)) {
+            case 1 -> getParentNode(child.left, parent, key);
+            case -1 -> getParentNode(child.right, parent, key);
+            default -> parent;
+        };
+    }
+
+    /*private Node<K, V> deleteSpecificNode(Node<K, V> node, K key) {
         if (node != null) {
             //Si key o value son null lanza NullPointerException
 //            if (node.key == null || node.value == null) {
@@ -124,12 +174,12 @@ public class LinkedBinarySearchTree<K, V>
 //            }
             Node<K, V> leftNode = node.left;
             Node<K, V> rightNode = node.right;
-            if (leftNode != null && leftNode.key == key) {
+           *//* if (leftNode != null && leftNode.key == key) {
                 leftNode.left =
                 return leftNode.left;
             } else if (rightNode != null && rightNode.key == key) {
                 return rightNode.left;
-            }
+            }*//*
             if (comparator.compare(node.key, key) < 0) {
                 return new Node<K, V>(node.key, node.value, leftNode, deleteSpecificNode(rightNode, key));
             } else if (comparator.compare(node.key, key) > 0) {
@@ -140,5 +190,6 @@ public class LinkedBinarySearchTree<K, V>
                     return new Node<K, V>(null, null);
             }
         }
-    }
+        return new Node<K, V>(null, null);
+    }*/
 }
