@@ -1,3 +1,4 @@
+import PersistentTree.LinkedBinarySearchTree;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
@@ -33,16 +34,24 @@ class LinkedBinarySearchTreeTest {
         //assertNull(arb1.get(100));
     }
 
+    /*@Test
+    void insertNullKey() {
+        arb = arb.put(null, 29);
+        assertEquals(null, arb.remove(null));
+    }*/
+
     @Test
     void remove() {
         arb = arb.put(30, 30).put(20, 20).put(15, 15).put(10, 10).put(17, 17).put(25, 25).put(40, 40).put(50, 50).put(45, 45).put(44, 44).put(60, 60);
         arb = arb.remove(40);
         assertFalse(arb.containsKey(40));
     }
+
     @Test
     void remove2() {
         arb = arb.put(30, 30).put(20, 20).put(15, 15).put(10, 10).put(17, 17).put(25, 25).put(40, 40).put(50, 50).put(45, 45).put(44, 44).put(60, 60);
         arb = arb.remove(20);
         assertFalse(arb.containsKey(20));
     }
+
 }

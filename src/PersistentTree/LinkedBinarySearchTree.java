@@ -1,8 +1,11 @@
+package PersistentTree;
+
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 public class LinkedBinarySearchTree<K, V>
-        implements BinarySearchTree<K, V> {
+        implements BinarySearchTree<K, V>,
+        BinaryTree<Pair<K, V>> {
     private final Node<K, V> root;
     private final Comparator<? super K> comparator;
 
@@ -43,6 +46,21 @@ public class LinkedBinarySearchTree<K, V>
     }
 
     @Override
+    public Pair<K, V> root() {
+        return null;
+    }
+
+    @Override
+    public BinaryTree<Pair<K, V>> left() {
+        return null;
+    }
+
+    @Override
+    public BinaryTree<Pair<K, V>> right() {
+        return null;
+    }
+
+    @Override
     public boolean containsKey(K key) {
         return getNode(root, key) != null;
     }
@@ -58,7 +76,7 @@ public class LinkedBinarySearchTree<K, V>
         else
             return node.value;
     }
-    
+
     private Node<K, V> getNode(Node<K, V> node, K key) {
         if (node == null)
             return null;
@@ -113,6 +131,7 @@ public class LinkedBinarySearchTree<K, V>
             throw new NoSuchElementException("");
     }
 
+
     private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
         Node<K, V> nodeToDelete = getNode(root, key);
         if (nodeToDelete.key.equals(key)) {
@@ -127,10 +146,7 @@ public class LinkedBinarySearchTree<K, V>
                 deleteSpecificNode(root, biggestOfLeftSubtree.key);
                 Node<K, V> childOfDeletedNode = new Node<>(biggestOfLeftSubtree.key, biggestOfLeftSubtree.value, nodeToDelete.left, nodeToDelete.right);
                 Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
-                if (parentOfDeletedNode.left != nodeToDelete) {
-                    return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
-                } else
-                    return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
+                return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
             }
             //Then it means that the node we want to delete has only one child
             else {
@@ -138,22 +154,23 @@ public class LinkedBinarySearchTree<K, V>
                 Node<K, V> childOfDeletedNode;
                 if (nodeToDelete.left != null) {
                     childOfDeletedNode = nodeToDelete.left;
-                    if (parentOfDeletedNode.left != nodeToDelete) {
-                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
-                    } else
-                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
+                    return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
 
                 } else {
                     childOfDeletedNode = nodeToDelete.right;
-                    if (parentOfDeletedNode.left != nodeToDelete) {
-                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
-                    } else
-                        return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
+                    return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
 
                 }
             }
         }
         return null;
+    }
+
+    private Node<K, V> getKvNode(Node<K, V> nodeToDelete, Node<K, V> parentOfDeletedNode, Node<K, V> childOfDeletedNode) {
+        if (parentOfDeletedNode.left != nodeToDelete) {
+            return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
+        } else
+            return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
     }
 
     private Node<K, V> biggestOfLeftSubtree(Node<K, V> node) {
@@ -178,30 +195,4 @@ public class LinkedBinarySearchTree<K, V>
         }
     }
 
-    /*private Node<K, V> deleteSpecificNode(Node<K, V> node, K key) {
-        if (node != null) {
-            //Si key o value son null lanza NullPointerException
-//            if (node.key == null || node.value == null) {
-//                throw new NullPointerException("");
-//            }
-            Node<K, V> leftNode = node.left;
-            Node<K, V> rightNode = node.right;
-           *//* if (leftNode != null && leftNode.key == key) {
-                leftNode.left =
-                return leftNode.left;
-            } else if (rightNode != null && rightNode.key == key) {
-                return rightNode.left;
-            }*//*
-            if (comparator.compare(node.key, key) < 0) {
-                return new Node<K, V>(node.key, node.value, leftNode, deleteSpecificNode(rightNode, key));
-            } else if (comparator.compare(node.key, key) > 0) {
-                return new Node<K, V>(node.key, node.value, deleteSpecificNode(leftNode, key), rightNode);
-            } else {
-//                Si key existe en el ABB
-                if (leftNode.key == null)
-                    return new Node<K, V>(null, null);
-            }
-        }
-        return new Node<K, V>(null, null);
-    }*/
 }

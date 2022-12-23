@@ -1,3 +1,5 @@
+package PersistentTree;
+
 public interface BinarySearchTree<K, V> {
     boolean isEmpty();
 
