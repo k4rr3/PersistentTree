@@ -176,7 +176,9 @@ public class LinkedBinarySearchTree<K, V>
         }
     }
 
-    //--------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------//
+    //                      SECOND PART OF THE PROJECT                                //
+    //--------------------------------------------------------------------------------//
     @Override
     public boolean isEmpty() {
         return root == null;
@@ -192,15 +194,7 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public BinaryTree<Pair<K, V>> left() {
-        /*if (root == null || root.left == null)
-            return null;
-        else {
-            LinkedBinarySearchTree<K, V> leftSubTree = new LinkedBinarySearchTree<>(comparator, root.left);
-            if (leftSubTree.isEmpty())
-                throw new NullPointerException();
 
-            return leftSubTree;
-        }*/
         if (root == null)
             throw new NoSuchElementException("left child of empty tree");
 
@@ -210,25 +204,6 @@ public class LinkedBinarySearchTree<K, V>
 
     }
 
-    /*private BinaryTree<Pair<K, V>> subTree(Node<K, V> node, String side) {
-        Node<K, V> subTreeToCheck;
-
-
-        if (node == null || subTreeToCheck == null) {
-            return null
-            if (side.equals("left")) {
-                subTreeToCheck = node.left;
-            } else {
-                subTreeToCheck = node.right;
-            }
-        } else {
-            LinkedBinarySearchTree<K, V> leftSubTree = new LinkedBinarySearchTree<>(comparator, root.left);
-            if (leftSubTree.isEmpty())
-                throw new NullPointerException();
-
-            return leftSubTree;
-        }
-    }*/
 
     @Override
     public BinaryTree<Pair<K, V>> right() {

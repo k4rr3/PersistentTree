@@ -18,6 +18,7 @@ public class Traversals {
             inorderRec(result, tree.right());
         }
     }
+
     public static <E> List<E> inorderIter(BinaryTree<E> tree) {
         List<E> result = new ArrayList<>();
         Deque<BinaryTree<E>> stack = new ArrayDeque<>();
@@ -36,11 +37,11 @@ public class Traversals {
             BinaryTree<E> current = stack.removeFirst();
             result.add(current.root());
 
-            if (!current.right().isEmpty()) {
+            if (current.right() != null && !current.right().isEmpty()) {
                 current = current.right();
 
                 while (!current.isEmpty()) {
-                    stack.add(current);
+                    stack.addFirst(current);
                     current = current.left();
                 }
             }
