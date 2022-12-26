@@ -207,15 +207,10 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public BinaryTree<Pair<K, V>> right() {
-        if (root == null || root.right == null)
-            return null;
-        else {
-            LinkedBinarySearchTree<K, V> rightSubTree = new LinkedBinarySearchTree<>(comparator, root.right);
-            if (rightSubTree.isEmpty())
-                throw new NullPointerException();
+        if (root == null)
+            throw new NoSuchElementException("right child of empty tree");
 
-            return rightSubTree;
-        }
+        return new LinkedBinarySearchTree<>(comparator, root.right);
     }
 
 }

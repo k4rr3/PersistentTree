@@ -55,4 +55,64 @@ class TraversalsTest {
         assertIterableEquals(expected, result);
     }
 
+    @Test
+    void testInorderIterEmptyTree() {
+        LinkedBinarySearchTree<Integer, Integer> tree = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+        List<Pair<Integer, Integer>> expected = new ArrayList<>();
+        assertEquals(expected, Traversals.inorderIter(tree));
+    }
+
+    @Test
+    void testInorderIterSingleNodeTree() {
+        LinkedBinarySearchTree<Integer, Integer> tree = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+        tree = tree.put(5, 5);
+
+        List<Pair<Integer, Integer>> expected = List.of(new Pair<>(5, 5));
+        assertEquals(expected, Traversals.inorderIter(tree));
+    }
+
+    @Test
+    void testInorderIterCompleteTreeHeight2() {
+        LinkedBinarySearchTree<Integer, Integer> tree = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+        tree = tree.put(5, 5);
+        tree = tree.put(3, 3);
+        tree = tree.put(7, 7);
+        List<Pair<Integer, Integer>> expected = List.of(new Pair<>(3, 3), new Pair<>(5, 5), new Pair<>(7, 7));
+        assertEquals(expected, Traversals.inorderIter(tree));
+    }
+
+    @Test
+    void testInorderIterBalancedTreeHeight3() {
+        LinkedBinarySearchTree<Integer, Integer> tree = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+        tree = tree.put(5, 5);
+        tree = tree.put(3, 3);
+        tree = tree.put(7, 7);
+        tree = tree.put(2, 2);
+        tree = tree.put(4, 4);
+        tree = tree.put(6, 6);
+        tree = tree.put(8, 8);
+        List<Pair<Integer, Integer>> expected = List.of(
+                new Pair<>(2, 2),
+                new Pair<>(3, 3),
+                new Pair<>(4, 4),
+                new Pair<>(5, 5),
+                new Pair<>(6, 6),
+                new Pair<>(7, 7),
+                new Pair<>(8, 8));
+        assertEquals(expected, Traversals.inorderIter(tree));
+    }
+
+    @Test
+    void testInorderIterRightSubtreeHeight2() {
+        LinkedBinarySearchTree<Integer, Integer> tree = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+        tree = tree.put(5, 5);
+        tree = tree.put(7, 7);
+        tree = tree.put(8, 8);
+        List<Pair<Integer, Integer>> expected = List.of(
+                new Pair<>(5, 5),
+                new Pair<>(7, 7),
+                new Pair<>(8, 8));
+        assertEquals(expected, Traversals.inorderIter(tree));
+
+    }
 }
