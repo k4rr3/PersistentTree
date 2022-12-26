@@ -40,25 +40,6 @@ public class LinkedBinarySearchTree<K, V>
         this.root = root;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return this.root == null;
-    }
-
-    @Override
-    public Pair<K, V> root() {
-        return null;
-    }
-
-    @Override
-    public BinaryTree<Pair<K, V>> left() {
-        return null;
-    }
-
-    @Override
-    public BinaryTree<Pair<K, V>> right() {
-        return null;
-    }
 
     @Override
     public boolean containsKey(K key) {
@@ -192,6 +173,73 @@ public class LinkedBinarySearchTree<K, V>
             default -> {
                 return parent;
             }
+        }
+    }
+
+    //--------------------------------------------------------------------------------
+    @Override
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    @Override
+    public Pair<K, V> root() {
+        if (isEmpty())
+            throw new NullPointerException();
+
+        return new Pair<K, V>(root.key, root.value);
+    }
+
+    @Override
+    public BinaryTree<Pair<K, V>> left() {
+        /*if (root == null || root.left == null)
+            return null;
+        else {
+            LinkedBinarySearchTree<K, V> leftSubTree = new LinkedBinarySearchTree<>(comparator, root.left);
+            if (leftSubTree.isEmpty())
+                throw new NullPointerException();
+
+            return leftSubTree;
+        }*/
+        if (root == null)
+            throw new NoSuchElementException("left child of empty tree");
+
+
+        return new LinkedBinarySearchTree<>(comparator, root.left);
+
+
+    }
+
+    /*private BinaryTree<Pair<K, V>> subTree(Node<K, V> node, String side) {
+        Node<K, V> subTreeToCheck;
+
+
+        if (node == null || subTreeToCheck == null) {
+            return null
+            if (side.equals("left")) {
+                subTreeToCheck = node.left;
+            } else {
+                subTreeToCheck = node.right;
+            }
+        } else {
+            LinkedBinarySearchTree<K, V> leftSubTree = new LinkedBinarySearchTree<>(comparator, root.left);
+            if (leftSubTree.isEmpty())
+                throw new NullPointerException();
+
+            return leftSubTree;
+        }
+    }*/
+
+    @Override
+    public BinaryTree<Pair<K, V>> right() {
+        if (root == null || root.right == null)
+            return null;
+        else {
+            LinkedBinarySearchTree<K, V> rightSubTree = new LinkedBinarySearchTree<>(comparator, root.right);
+            if (rightSubTree.isEmpty())
+                throw new NullPointerException();
+
+            return rightSubTree;
         }
     }
 
