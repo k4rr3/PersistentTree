@@ -73,7 +73,12 @@ class LinkedBinarySearchTreeTest {
         assertEquals(40, arbII.get(4));
         assertEquals(20, arbII.get(2));
         assertEquals(90, arbII.get(9));
-        //assertNull(arb1.get(100));
+        LinkedBinarySearchTree<Integer, Integer> finalTree = arbII;
+        assertThrows(NoSuchElementException.class, () -> finalTree.get(100));
+
+        LinkedBinarySearchTree<Integer, Integer> finalTree2 = arbII;
+        assertThrows(NullPointerException.class, () -> finalTree.get(null));
+
     }
 
     @Test
@@ -138,6 +143,8 @@ class LinkedBinarySearchTreeTest {
         // Intentamos eliminar un nodo que no existe en el árbol
         LinkedBinarySearchTree<Integer, Integer> finalTree = tree;
         assertThrows(NoSuchElementException.class, () -> finalTree.remove(100));
+        LinkedBinarySearchTree<Integer, Integer> finalTree2 = tree;
+        assertThrows(NullPointerException.class, () -> finalTree.remove(null));
     }
 
 

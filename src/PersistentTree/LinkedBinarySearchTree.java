@@ -2,6 +2,7 @@ package PersistentTree;
 
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class LinkedBinarySearchTree<K, V>
         implements BinarySearchTree<K, V>,
@@ -48,12 +49,11 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public V get(K key) {
-        // ¿?
+        if (key == null)
+            throw new NullPointerException("It's not possible to find a node with a null key");
         Node<K, V> node = getNode(root, key);
         if (node == null)
-            throw new NullPointerException("");
-        else if (node.key == null)
-            throw new NoSuchElementException("");
+            throw new NoSuchElementException("Key doesn't exist in the tree");
         else
             return node.value;
     }
@@ -71,49 +71,59 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public LinkedBinarySearchTree<K, V> put(K key, V value) {
-// ¿?
-        Node<K, V> n = createNewNode(root, key, value);
-        return new LinkedBinarySearchTree<>(comparator, n);
+        Node<K, V> newNode = createNewNode(root, key, value);
+        return new LinkedBinarySearchTree<>(comparator, newNode);
     }
 
     private Node<K, V> createNewNode(Node<K, V> node, K key, V value) {
         if (node != null) {
             //Si key o value son null lanza NullPointerException
             if (node.key == null || node.value == null) {
-                throw new NullPointerException("");
+                throw new NullPointerException("The key or value you're trying to insert is null");
             }
-
             if (comparator.compare(node.key, key) < 0) {
-                return new Node<K, V>(node.key, node.value, node.left, createNewNode(node.right, key, value));
+                return new Node<>(node.key, node.value, node.left, createNewNode(node.right, key, value));
             } else if (comparator.compare(node.key, key) > 0) {
-                return new Node<K, V>(node.key, node.value, createNewNode(node.left, key, value), node.right);
+                return new Node<>(node.key, node.value, createNewNode(node.left, key, value), node.right);
             } else {
-//                Si key existe en el ABB de origen se modificará su actual valor por
-//                value generando un nuevo nodo que represente esta modificación
-//                para el árbol devuelto.
-                return new Node<K, V>(node.key, value, node.left, node.right);
+                return new Node<>(node.key, value, node.left, node.right);
             }
         }
-        //throw new NullPointerException("");
         //Si el arbol que teniamos estaba vacio, crearemos un nuevo nodo que será la raíz
-        return new Node<K, V>(key, value);
+        return new Node<>(key, value);
     }
 
     @Override
     public LinkedBinarySearchTree<K, V> remove(K key) {
 // ¿?
         if (key == null) {
-            throw new NullPointerException("");
+            throw new NullPointerException("The key you're trying to remove is null");
         }
         if (containsKey(key)) {
-            Node<K, V> node = deleteSpecificNode(root, key);
+            Node<K, V> node = deleteSpecificNode(key);
             return new LinkedBinarySearchTree<>(comparator, node);
         } else
             throw new NoSuchElementException("");
     }
 
+    private Node<K, V> deleteSpecificNode(K key) {
+        Node<K, V> node = getNode(this.root, key);
+        if (node == null)
+            throw new NoSuchElementException("The node you're trying to delete is null");
 
-    private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
+        if (node.left == null && node.right == null)
+            return getKvNode(node, getParentNode(root, root, node.key), null);
+        else if (node.left != null && node.right != null) {
+
+            Node<K, V> maxLeft = biggestOfLeftSubtree(node.left);
+            deleteSpecificNode(maxLeft.key);
+            Node<K, V> childOfDeletedNode = new Node<>(maxLeft.key, maxLeft.value, node.left, node.right);
+            return getKvNode(node, Objects.requireNonNull(getParentNode(root, root, node.key)), childOfDeletedNode);
+        } else {
+            return getKvNode(node, getParentNode(root, root, node.key), Objects.requireNonNullElseGet(node.left, () -> node.right));
+        }
+    }
+   /* private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
         Node<K, V> nodeToDelete = getNode(root, key);
         if (nodeToDelete.key.equals(key)) {
             //Checking if the node that we want to delete is a leaf, or it is not
@@ -146,13 +156,13 @@ public class LinkedBinarySearchTree<K, V>
             }
         }
         return null;
-    }
+    }*/
 
-    private Node<K, V> getKvNode(Node<K, V> nodeToDelete, Node<K, V> parentOfDeletedNode, Node<K, V> childOfDeletedNode) {
-        if (parentOfDeletedNode.left != nodeToDelete) {
-            return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, parentOfDeletedNode.left, childOfDeletedNode);
+    private Node<K, V> getKvNode(Node<K, V> node, Node<K, V> parent, Node<K, V> child) {
+        if (parent.left != node) {
+            return new Node<>(parent.key, parent.value, parent.left, child);
         } else
-            return new Node<>(parentOfDeletedNode.key, parentOfDeletedNode.value, childOfDeletedNode, parentOfDeletedNode.right);
+            return new Node<>(parent.key, parent.value, child, parent.right);
     }
 
     private Node<K, V> biggestOfLeftSubtree(Node<K, V> node) {
@@ -190,14 +200,14 @@ public class LinkedBinarySearchTree<K, V>
         if (isEmpty())
             throw new NullPointerException();
 
-        return new Pair<K, V>(root.key, root.value);
+        return new Pair<>(root.key, root.value);
     }
 
     @Override
     public BinaryTree<Pair<K, V>> left() {
 
         if (root == null)
-            throw new NoSuchElementException("left child of empty tree");
+            throw new NoSuchElementException("Left child of empty tree");
 
 
         return new LinkedBinarySearchTree<>(comparator, root.left);
@@ -209,7 +219,7 @@ public class LinkedBinarySearchTree<K, V>
     @Override
     public BinaryTree<Pair<K, V>> right() {
         if (root == null)
-            throw new NoSuchElementException("right child of empty tree");
+            throw new NoSuchElementException("Right child of empty tree");
 
         return new LinkedBinarySearchTree<>(comparator, root.right);
     }
