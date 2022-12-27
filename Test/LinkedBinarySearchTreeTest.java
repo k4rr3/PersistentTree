@@ -143,9 +143,9 @@ class LinkedBinarySearchTreeTest {
         // Intentamos eliminar un nodo que no existe en el árbol
         LinkedBinarySearchTree<Integer, Integer> finalTree = tree;
         assertThrows(NoSuchElementException.class, () -> finalTree.remove(100));
-        LinkedBinarySearchTree<Integer, Integer> finalTree2 = tree;
         assertThrows(NullPointerException.class, () -> finalTree.remove(null));
     }
+
 
 
 }

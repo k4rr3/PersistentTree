@@ -12,7 +12,7 @@ public class Traversals {
 
     private static <E> void inorderRec(List<E> result,
                                        BinaryTree<E> tree) {
-        if (tree != null && !tree.isEmpty()) {
+        if (!tree.isEmpty()) {
             inorderRec(result, tree.left());
             result.add(tree.root());
             inorderRec(result, tree.right());

@@ -115,4 +115,29 @@ class TraversalsTest {
         assertEquals(expected, Traversals.inorderIter(tree));
 
     }
+
+    @Test
+    void rootTest() {
+// Crea un árbol binario de búsqueda vacío
+        LinkedBinarySearchTree<Integer, String> arbIS = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+// Verifica que se lanza la excepción NullPointerException al intentar obtener la raíz de un árbol vacío
+        assertThrows(NullPointerException.class, arbIS::root);
+    }
+
+    @Test
+    void leftTest() {
+// Crea un árbol binario de búsqueda vacío
+        LinkedBinarySearchTree<Integer, String> arbIS = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+// Verifica que se lanza la excepción NoSuchElementException al intentar obtener el hijo izquierdo de un árbol vacío
+        assertThrows(NoSuchElementException.class, arbIS::left);
+    }
+
+    @Test
+    void rightTest() {
+// Crea un árbol binario de búsqueda vacío
+        LinkedBinarySearchTree<Integer, String> arbIS = new LinkedBinarySearchTree<>(Comparator.naturalOrder());
+// Verifica que se lanza la excepción NoSuchElementException al intentar obtener el hijo izquierdo de un árbol vacío
+        assertThrows(NoSuchElementException.class, arbIS::right);
+    }
+
 }
