@@ -95,7 +95,6 @@ class LinkedBinarySearchTreeTest {
         arbII = arbII.put(5, 5).put(3, 3).put(7, 7);
         // Eliminar el elemento con clave 3
         arbII = arbII.remove(3);
-
         // Comprobar que el elemento con clave 3 ha sido eliminada
         assertFalse(arbII.containsKey(3));
     }

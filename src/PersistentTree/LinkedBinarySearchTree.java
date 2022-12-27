@@ -118,7 +118,8 @@ public class LinkedBinarySearchTree<K, V>
         if (nodeToDelete.key.equals(key)) {
             //Checking if the node that we want to delete is a leaf, or it is not
             if (nodeToDelete.left == null && nodeToDelete.right == null) {
-                return new Node<>(null, null);
+                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
+                return getKvNode(nodeToDelete, parentOfDeletedNode, null);
             }
             //Checking if the node that we want to delete has two children
 
