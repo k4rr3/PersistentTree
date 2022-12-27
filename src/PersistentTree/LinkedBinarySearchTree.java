@@ -198,7 +198,7 @@ public class LinkedBinarySearchTree<K, V>
     @Override
     public Pair<K, V> root() {
         if (isEmpty())
-            throw new NullPointerException();
+            throw new NullPointerException("The root is null because the tree is empty");
 
         return new Pair<>(root.key, root.value);
     }
