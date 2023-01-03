@@ -59,6 +59,11 @@ public class LinkedBinarySearchTree<K, V>
     }
 
     private Node<K, V> getNode(Node<K, V> node, K key) {
+
+        if(key == null){
+            throw new NullPointerException("It's not possible to find out whether the tree contains a null key or not ");
+        }
+
         if (node == null)
             return null;
 
