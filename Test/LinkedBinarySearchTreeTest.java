@@ -90,17 +90,13 @@ class LinkedBinarySearchTreeTest {
         LinkedBinarySearchTree<Integer, Integer> finalTree = arbII;
         assertThrows(NoSuchElementException.class, () -> finalTree.get(100));
 
-        //Checking the case of an empty tree (root == null)
-        LinkedBinarySearchTree<Integer, Integer> finalTree2 = arbII;
-        assertThrows(NullPointerException.class, () -> finalTree2.get(4));
-
         //Checking the case of putting a new node with a null key
-        LinkedBinarySearchTree<Integer, Integer> finalTree3 = arbII.put(null, 0);
-        assertThrows(NullPointerException.class, () -> finalTree3.get(3));
+        LinkedBinarySearchTree<Integer, Integer> finalTree3 = arbII;
+        assertThrows(NullPointerException.class, () -> finalTree3.put(null, 0));
 
         //Checking the case of putting a new node with a null value
-        LinkedBinarySearchTree<Integer, Integer> finalTree4 = arbII.put(12, null);
-        assertThrows(NullPointerException.class, () -> finalTree4.get(12));
+        LinkedBinarySearchTree<Integer, Integer> finalTree4 = arbII;
+        assertThrows(NullPointerException.class, () -> finalTree4.put(12, null));
     }
     @Test
     void remove() {

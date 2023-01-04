@@ -87,10 +87,6 @@ public class LinkedBinarySearchTree<K, V>
 
     private Node<K, V> createNewNode(Node<K, V> node, K key, V value) {
         if (node != null) {
-            //Si key o value son null lanza NullPointerException
-            if (node.key == null || node.value == null) {
-                throw new NullPointerException("Value or Key from the current node is null");
-            }
             if (comparator.compare(node.key, key) < 0) {
                 return new Node<>(node.key, node.value, node.left, createNewNode(node.right, key, value));
             } else if (comparator.compare(node.key, key) > 0) {
