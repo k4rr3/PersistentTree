@@ -76,6 +76,11 @@ public class LinkedBinarySearchTree<K, V>
 
     @Override
     public LinkedBinarySearchTree<K, V> put(K key, V value) {
+        //Si la key o value pasadas como parametro son null lanza NullPointerException
+        if(key == null || value == null){
+            throw new NullPointerException("Can't add a new node to the BST with a null key or value");
+        }
+
         Node<K, V> newNode = createNewNode(root, key, value);
         return new LinkedBinarySearchTree<>(comparator, newNode);
     }
@@ -84,7 +89,7 @@ public class LinkedBinarySearchTree<K, V>
         if (node != null) {
             //Si key o value son null lanza NullPointerException
             if (node.key == null || node.value == null) {
-                throw new NullPointerException("The key or value you're trying to insert is null");
+                throw new NullPointerException("Value or Key from the current node is null");
             }
             if (comparator.compare(node.key, key) < 0) {
                 return new Node<>(node.key, node.value, node.left, createNewNode(node.right, key, value));
