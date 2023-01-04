@@ -109,7 +109,7 @@ public class LinkedBinarySearchTree<K, V>
             Node<K, V> node = deleteSpecificNode(key);
             return new LinkedBinarySearchTree<>(comparator, node);
         } else
-            throw new NoSuchElementException("");
+            return new LinkedBinarySearchTree<>(comparator, root);
     }
 
     private Node<K, V> deleteSpecificNode(K key) {
