@@ -66,7 +66,7 @@ class LinkedBinarySearchTreeTest {
         //assertThrows(NoSuchElementException.class, () -> finalTree.get(8));
     }
 
-
+/*
     @Test
     void put() {
         arbII = arbII.put(4, 40).put(2, 20).put(9, 90);
@@ -80,7 +80,28 @@ class LinkedBinarySearchTreeTest {
         assertThrows(NullPointerException.class, () -> finalTree.get(null));
 
     }
+*/
+    @Test
+    void put() {
+        arbII = arbII.put(4, 40).put(2, 20).put(9, 90);
+        assertEquals(40, arbII.get(4));
+        assertEquals(20, arbII.get(2));
+        assertEquals(90, arbII.get(9));
+        LinkedBinarySearchTree<Integer, Integer> finalTree = arbII;
+        assertThrows(NoSuchElementException.class, () -> finalTree.get(100));
 
+        //Checking the case of an empty tree (root == null)
+        LinkedBinarySearchTree<Integer, Integer> finalTree2 = arbII;
+        assertThrows(NullPointerException.class, () -> finalTree2.get(4));
+
+        //Checking the case of putting a new node with a null key
+        LinkedBinarySearchTree<Integer, Integer> finalTree3 = arbII.put(null, 0);
+        assertThrows(NullPointerException.class, () -> finalTree3.get(3));
+
+        //Checking the case of putting a new node with a null value
+        LinkedBinarySearchTree<Integer, Integer> finalTree4 = arbII.put(12, null);
+        assertThrows(NullPointerException.class, () -> finalTree4.get(12));
+    }
     @Test
     void remove() {
         arbII = arbII.put(30, 30).put(20, 20).put(15, 15).put(10, 10).put(17, 17).put(25, 25).put(40, 40).put(50, 50).put(45, 45).put(44, 44).put(60, 60);
