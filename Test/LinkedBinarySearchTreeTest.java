@@ -159,7 +159,8 @@ class LinkedBinarySearchTreeTest {
 
         // Intentamos eliminar un nodo que no existe en el árbol
         LinkedBinarySearchTree<Integer, Integer> finalTree = tree;
-        assertThrows(NoSuchElementException.class, () -> finalTree.remove(100));
+        //assertThrows(NoSuchElementException.class, () -> finalTree.remove(100));
+        //Eliminar una clave no existente no debe tirar una excepción, debe devolver una copia nueva del arbol pasado como parametro sin modificaciones
         assertThrows(NullPointerException.class, () -> finalTree.remove(null));
     }
 

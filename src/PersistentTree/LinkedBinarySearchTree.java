@@ -118,15 +118,15 @@ public class LinkedBinarySearchTree<K, V>
             throw new NoSuchElementException("The node you're trying to delete is null");
 
         if (node.left == null && node.right == null)
-            return getKvNode(node, getParentNode(root, root, node.key), null);
+            return getKvNode(node, getParentNode(node.key), null);
         else if (node.left != null && node.right != null) {
 
             Node<K, V> maxLeft = biggestOfLeftSubtree(node.left);
             deleteSpecificNode(maxLeft.key);
             Node<K, V> childOfDeletedNode = new Node<>(maxLeft.key, maxLeft.value, node.left, node.right);
-            return getKvNode(node, Objects.requireNonNull(getParentNode(root, root, node.key)), childOfDeletedNode);
+            return getKvNode(node, Objects.requireNonNull(getParentNode(node.key)), childOfDeletedNode);
         } else {
-            return getKvNode(node, getParentNode(root, root, node.key), Objects.requireNonNullElseGet(node.left, () -> node.right));
+            return getKvNode(node, getParentNode(node.key), Objects.requireNonNullElseGet(node.left, () -> node.right));
         }
     }
    /* private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
@@ -191,6 +191,10 @@ public class LinkedBinarySearchTree<K, V>
                 return parent;
             }
         }
+    }
+
+    private Node<K, V> getParentNode(K key) {
+        return getParentNode(root, root, key);
     }
 
     //--------------------------------------------------------------------------------//
