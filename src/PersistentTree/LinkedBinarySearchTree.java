@@ -129,40 +129,7 @@ public class LinkedBinarySearchTree<K, V>
             return getKvNode(node, getParentNode(node.key), Objects.requireNonNullElseGet(node.left, () -> node.right));
         }
     }
-   /* private Node<K, V> deleteSpecificNode(Node<K, V> root, K key) {
-        Node<K, V> nodeToDelete = getNode(root, key);
-        if (nodeToDelete.key.equals(key)) {
-            //Checking if the node that we want to delete is a leaf, or it is not
-            if (nodeToDelete.left == null && nodeToDelete.right == null) {
-                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
-                return getKvNode(nodeToDelete, parentOfDeletedNode, null);
-            }
-            //Checking if the node that we want to delete has two children
 
-            else if (nodeToDelete.left != null && nodeToDelete.right != null) {
-                Node<K, V> biggestOfLeftSubtree = biggestOfLeftSubtree(nodeToDelete.left);
-                deleteSpecificNode(root, biggestOfLeftSubtree.key);
-                Node<K, V> childOfDeletedNode = new Node<>(biggestOfLeftSubtree.key, biggestOfLeftSubtree.value, nodeToDelete.left, nodeToDelete.right);
-                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
-                return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
-            }
-            //Then it means that the node we want to delete has only one child
-            else {
-                Node<K, V> parentOfDeletedNode = getParentNode(root, root, nodeToDelete.key);
-                Node<K, V> childOfDeletedNode;
-                if (nodeToDelete.left != null) {
-                    childOfDeletedNode = nodeToDelete.left;
-                    return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
-
-                } else {
-                    childOfDeletedNode = nodeToDelete.right;
-                    return getKvNode(nodeToDelete, parentOfDeletedNode, childOfDeletedNode);
-
-                }
-            }
-        }
-        return null;
-    }*/
 
     private Node<K, V> getKvNode(Node<K, V> node, Node<K, V> parent, Node<K, V> child) {
         if (parent.left != node) {
@@ -210,7 +177,7 @@ public class LinkedBinarySearchTree<K, V>
         if (isEmpty())
             throw new NullPointerException("The root is null because the tree is empty");
 
-        return new Pair<>(root.key, root.value);
+        return new Pair<>(Objects.requireNonNull(root).key, root.value);
     }
 
     @Override
